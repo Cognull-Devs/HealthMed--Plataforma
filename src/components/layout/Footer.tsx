@@ -1,110 +1,128 @@
-import { Link } from 'react-router-dom';
-import { Instagram, Youtube, Mail, Phone } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { Mail, Phone, MapPin, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-card/50 border-t border-border/50 mt-auto">
+    <footer className="bg-card border-t border-border">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
-          <div className="md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">H</span>
+          <div className="space-y-4">
+            <Link to="/" className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-lg">H</span>
               </div>
-              <span className="font-heading font-bold text-xl">
-                Health<span className="text-primary">Med</span>
+              <span className="font-heading font-bold text-xl text-foreground">
+                Health<span className="text-secondary">Med</span>
               </span>
             </Link>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Sua plataforma de estudos médicos. Aprenda medicina de forma prática e objetiva.
+            <p className="text-sm text-muted-foreground">
+              Plataforma de ensino médico com conteúdo de qualidade para sua aprovação. Medicina direto ao ponto!
             </p>
-            <div className="flex items-center gap-4 mt-6">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+            <div className="flex gap-4">
+              <a href="#" className="p-2 rounded-lg bg-muted hover:bg-primary/20 hover:text-primary transition-all">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="#" className="p-2 rounded-lg bg-muted hover:bg-primary/20 hover:text-primary transition-all">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="#" className="p-2 rounded-lg bg-muted hover:bg-primary/20 hover:text-primary transition-all">
                 <Youtube className="w-5 h-5" />
+              </a>
+              <a href="#" className="p-2 rounded-lg bg-muted hover:bg-primary/20 hover:text-primary transition-all">
+                <Twitter className="w-5 h-5" />
               </a>
             </div>
           </div>
 
-          {/* Links */}
-          <div>
-            <h4 className="font-heading font-semibold mb-4">Navegação</h4>
-            <ul className="space-y-3">
+          {/* Links Rápidos */}
+          <div className="space-y-4">
+            <h4 className="font-heading font-semibold text-foreground">Links Rápidos</h4>
+            <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
+                <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Início
                 </Link>
               </li>
               <li>
-                <Link to="/#periodos" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
-                  Períodos
-                </Link>
-              </li>
-              <li>
-                <Link to="/sobre" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
-                  Sobre Nós
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Períodos */}
-          <div>
-            <h4 className="font-heading font-semibold mb-4">Períodos</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/periodo/1-periodo" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
+                <Link to="/periodo/1" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   1º Período
                 </Link>
               </li>
               <li>
-                <Link to="/periodo/2-periodo" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
+                <Link to="/periodo/2" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   2º Período
                 </Link>
               </li>
               <li>
-                <Link to="/periodo/3-periodo" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
+                <Link to="/periodo/3" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   3º Período
-                </Link>
-              </li>
-              <li>
-                <Link to="/periodo/4-periodo" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
-                  4º Período
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h4 className="font-heading font-semibold mb-4">Contato</h4>
+          {/* Suporte */}
+          <div className="space-y-4">
+            <h4 className="font-heading font-semibold text-foreground">Suporte</h4>
+            <ul className="space-y-2">
+              <li>
+                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  FAQ
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Termos de Uso
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Política de Privacidade
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Fale Conosco
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contato */}
+          <div className="space-y-4">
+            <h4 className="font-heading font-semibold text-foreground">Contato</h4>
             <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-muted-foreground text-sm">
-                <Mail className="w-4 h-4" />
+              <li className="flex items-center gap-3 text-sm text-muted-foreground">
+                <Mail className="w-4 h-4 text-primary" />
                 contato@healthmed.com.br
               </li>
-              <li className="flex items-center gap-2 text-muted-foreground text-sm">
-                <Phone className="w-4 h-4" />
+              <li className="flex items-center gap-3 text-sm text-muted-foreground">
+                <Phone className="w-4 h-4 text-primary" />
                 (11) 99999-9999
+              </li>
+              <li className="flex items-start gap-3 text-sm text-muted-foreground">
+                <MapPin className="w-4 h-4 text-primary mt-0.5" />
+                São Paulo, SP - Brasil
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-border/50 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground text-sm">
+        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-muted-foreground">
             © 2024 HealthMed. Todos os direitos reservados.
           </p>
-          <div className="flex items-center gap-6">
-            <Link to="/termos" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
-              Termos de Uso
-            </Link>
-            <Link to="/privacidade" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
+          <div className="flex gap-6">
+            <a href="#" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              Termos
+            </a>
+            <a href="#" className="text-xs text-muted-foreground hover:text-primary transition-colors">
               Privacidade
-            </Link>
+            </a>
+            <a href="#" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              Cookies
+            </a>
           </div>
         </div>
       </div>

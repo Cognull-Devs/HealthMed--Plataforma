@@ -1,160 +1,97 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Menu, X, LogOut, BookOpen, LayoutDashboard } from 'lucide-react';
-import { useState } from 'react';
-import { useCart } from '@/contexts/CartContext';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Link } from "react-router-dom";
+import { ShoppingCart, Menu, X, Search, User } from "lucide-react";
+import { useState } from "react";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { totalItems } = useCart();
-  const { user, isAuthenticated, isAdmin, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
+    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xl">H</span>
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="relative">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-lg">H</span>
+              </div>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-secondary rounded-full animate-pulse" />
             </div>
-            <span className="font-heading font-bold text-xl md:text-2xl">
-              Health<span className="text-primary">Med</span>
-            </span>
+            <div className="flex flex-col">
+              <span className="font-heading font-bold text-xl text-foreground group-hover:text-primary transition-colors">
+                Health<span className="text-secondary">Med</span>
+              </span>
+              <span className="text-[10px] text-muted-foreground -mt-1">Medicina direto ao ponto</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link to="/" className="text-foreground/80 hover:text-foreground transition-colors font-medium">
+            <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               Início
             </Link>
-            <Link to="/#periodos" className="text-foreground/80 hover:text-foreground transition-colors font-medium">
+            <Link to="/periodo/1" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               Períodos
             </Link>
-            <Link to="/sobre" className="text-foreground/80 hover:text-foreground transition-colors font-medium">
-              Sobre
+            <Link to="/aluno" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              Área do Aluno
             </Link>
           </nav>
 
-          {/* Actions */}
-          <div className="flex items-center gap-3">
-            {/* Cart */}
-            <Link 
-              to="/carrinho" 
-              className="relative p-2 rounded-lg hover:bg-secondary/50 transition-colors"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-xs font-bold rounded-full flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-
-            {/* User Menu */}
-            {isAuthenticated ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                      <User className="w-4 h-4 text-primary" />
-                    </div>
-                    <span className="hidden md:inline text-sm font-medium">
-                      {user?.name.split(' ')[0]}
-                    </span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-card border-border">
-                  <div className="px-3 py-2">
-                    <p className="font-medium">{user?.name}</p>
-                    <p className="text-sm text-muted-foreground">{user?.email}</p>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/minhas-aulas" className="flex items-center gap-2 cursor-pointer">
-                      <BookOpen className="w-4 h-4" />
-                      Minhas Aulas
-                    </Link>
-                  </DropdownMenuItem>
-                  {isAdmin && (
-                    <DropdownMenuItem asChild>
-                      <Link to="/admin" className="flex items-center gap-2 cursor-pointer">
-                        <LayoutDashboard className="w-4 h-4" />
-                        Painel Admin
-                      </Link>
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2 cursor-pointer text-destructive">
-                    <LogOut className="w-4 h-4" />
-                    Sair
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Link to="/auth">
-                  <Button variant="ghost" className="hidden md:inline-flex">
-                    Entrar
-                  </Button>
-                </Link>
-                <Link to="/auth?mode=register">
-                  <Button className="btn-primary text-sm">
-                    Criar Conta
-                  </Button>
-                </Link>
-              </div>
-            )}
-
-            {/* Mobile Menu Button */}
-            <button 
-              className="md:hidden p-2 rounded-lg hover:bg-secondary/50 transition-colors"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center gap-4">
+            <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
+              <Search className="w-5 h-5" />
             </button>
+            <Link to="/carrinho" className="relative p-2 text-muted-foreground hover:text-foreground transition-colors">
+              <ShoppingCart className="w-5 h-5" />
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-secondary text-secondary-foreground text-xs font-bold rounded-full flex items-center justify-center">
+                2
+              </span>
+            </Link>
+            <Link to="/aluno" className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border hover:border-primary hover:text-primary transition-all">
+              <User className="w-4 h-4" />
+              <span className="text-sm font-medium">Entrar</span>
+            </Link>
+            <Link to="/checkout" className="health-button-primary text-sm">
+              Criar Conta
+            </Link>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden p-2 text-muted-foreground"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border/50 animate-fade-in">
-            <nav className="flex flex-col gap-2">
-              <Link 
-                to="/" 
-                className="px-4 py-3 rounded-lg hover:bg-secondary/50 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
+          <div className="md:hidden py-4 border-t border-border animate-fade-in">
+            <nav className="flex flex-col gap-4">
+              <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                 Início
               </Link>
-              <Link 
-                to="/#periodos" 
-                className="px-4 py-3 rounded-lg hover:bg-secondary/50 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
+              <Link to="/periodo/1" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                 Períodos
               </Link>
-              <Link 
-                to="/sobre" 
-                className="px-4 py-3 rounded-lg hover:bg-secondary/50 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Sobre
+              <Link to="/aluno" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                Área do Aluno
               </Link>
+              <Link to="/carrinho" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
+                <ShoppingCart className="w-4 h-4" />
+                Carrinho (2)
+              </Link>
+              <div className="flex gap-2 pt-4 border-t border-border">
+                <Link to="/aluno" className="flex-1 health-button-outline text-sm text-center">
+                  Entrar
+                </Link>
+                <Link to="/checkout" className="flex-1 health-button-primary text-sm text-center">
+                  Criar Conta
+                </Link>
+              </div>
             </nav>
           </div>
         )}

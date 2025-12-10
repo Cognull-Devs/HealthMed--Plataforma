@@ -1,34 +1,47 @@
-import { Link } from 'react-router-dom';
-import { BookOpen, ArrowRight } from 'lucide-react';
-import { Period } from '@/data/courses';
+import { Link } from "react-router-dom";
+import { BookOpen, ArrowRight } from "lucide-react";
 
 interface PeriodCardProps {
-  period: Period;
-  index: number;
+  id: string;
+  title: string;
+  description?: string;
+  imageUrl?: string;
 }
 
-const PeriodCard = ({ period, index }: PeriodCardProps) => {
+const PeriodCard = ({ id, title, description, imageUrl }: PeriodCardProps) => {
   return (
     <Link 
-      to={`/periodo/${period.slug}`}
-      className="group glass-card-hover p-6 flex flex-col items-center text-center"
-      style={{ animationDelay: `${index * 100}ms` }}
+      to={`/periodo/${id}`}
+      className="group health-card overflow-hidden block"
     >
-      <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-        <BookOpen className="w-8 h-8 text-primary" />
+      <div className="relative h-48 overflow-hidden">
+        {imageUrl ? (
+          <img 
+            src={imageUrl} 
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+            <BookOpen className="w-16 h-16 text-primary/50" />
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+        <div className="absolute top-4 left-4">
+          <span className="health-badge">Período</span>
+        </div>
       </div>
-      
-      <h3 className="font-heading font-semibold text-xl mb-2 group-hover:text-primary transition-colors">
-        {period.name}
-      </h3>
-      
-      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-        {period.description}
-      </p>
-      
-      <div className="flex items-center gap-2 text-primary font-medium text-sm mt-auto">
-        <span>{period.coursesCount} aulas</span>
-        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      <div className="p-6">
+        <h3 className="font-heading font-bold text-xl text-foreground group-hover:text-primary transition-colors mb-2">
+          {title}
+        </h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          {description || "Conteúdo completo para o período acadêmico"}
+        </p>
+        <div className="flex items-center text-primary text-sm font-medium">
+          <span>Ver conteúdos</span>
+          <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2" />
+        </div>
       </div>
     </Link>
   );
