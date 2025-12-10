@@ -1,9 +1,17 @@
+// src/components/layout/Header.tsx
 import { Link } from "react-router-dom";
-import { ShoppingCart, Menu, X, Search, User } from "lucide-react";
+import { ShoppingCart, Menu, X, Search, User, LogOut } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, profile, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    setMobileMenuOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -33,9 +41,11 @@ const Header = () => {
             <Link to="/periodo/1" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               Períodos
             </Link>
-            <Link to="/aluno" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              Área do Aluno
-            </Link>
+            {user && (
+              <Link to="/aluno" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                Área do Aluno
+              </Link>
+            )}
           </nav>
 
           {/* Desktop Actions */}
@@ -49,13 +59,37 @@ const Header = () => {
                 2
               </span>
             </Link>
-            <Link to="/aluno" className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border hover:border-primary hover:text-primary transition-all">
-              <User className="w-4 h-4" />
-              <span className="text-sm font-medium">Entrar</span>
-            </Link>
-            <Link to="/checkout" className="health-button-primary text-sm">
-              Criar Conta
-            </Link>
+
+            {user ? (
+              <>
+                <Link 
+                  to="/aluno" 
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border hover:border-primary hover:text-primary transition-all"
+                >
+                  <User className="w-4 h-4" />
+                  <span className="text-sm font-medium">
+                    {profile?.full_name?.split(' ')[0] || 'Aluno'}
+                  </span>
+                </Link>
+                <button 
+                  onClick={handleSignOut}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border hover:border-red-500 hover:text-red-500 transition-all"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span className="text-sm font-medium">Sair</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border hover:border-primary hover:text-primary transition-all">
+                  <User className="w-4 h-4" />
+                  <span className="text-sm font-medium">Entrar</span>
+                </Link>
+                <Link to="/cadastro" className="health-button-primary text-sm">
+                  Criar Conta
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -77,21 +111,40 @@ const Header = () => {
               <Link to="/periodo/1" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                 Períodos
               </Link>
-              <Link to="/aluno" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                Área do Aluno
-              </Link>
+              {user && (
+                <Link to="/aluno" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                  Área do Aluno
+                </Link>
+              )}
               <Link to="/carrinho" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
                 <ShoppingCart className="w-4 h-4" />
                 Carrinho (2)
               </Link>
-              <div className="flex gap-2 pt-4 border-t border-border">
-                <Link to="/aluno" className="flex-1 health-button-outline text-sm text-center">
-                  Entrar
-                </Link>
-                <Link to="/checkout" className="flex-1 health-button-primary text-sm text-center">
-                  Criar Conta
-                </Link>
-              </div>
+
+              {user ? (
+                <div className="flex flex-col gap-2 pt-4 border-t border-border">
+                  <div className="px-3 py-2 bg-muted rounded-lg">
+                    <p className="text-xs text-muted-foreground">Logado como</p>
+                    <p className="text-sm font-medium text-foreground">{profile?.full_name || user.email}</p>
+                  </div>
+                  <button 
+                    onClick={handleSignOut}
+                    className="health-button-outline text-sm text-center flex items-center justify-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sair
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-2 pt-4 border-t border-border">
+                  <Link to="/login" className="flex-1 health-button-outline text-sm text-center">
+                    Entrar
+                  </Link>
+                  <Link to="/cadastro" className="flex-1 health-button-primary text-sm text-center">
+                    Criar Conta
+                  </Link>
+                </div>
+              )}
             </nav>
           </div>
         )}
